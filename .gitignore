@@ -1,0 +1,15 @@
+.DS_Store
+*.log
+.metadata/
+RemoteSystemsTempFiles/
+*.pptx
+*.mv.db
+data/
+frontend/node_modules/
+frontend/dist/
+backend/target/
+backend/data/
+backend/application-local.properties
+
+# Very large local datasets (regenerate with sample-data/generators/)
+sample-data/large/

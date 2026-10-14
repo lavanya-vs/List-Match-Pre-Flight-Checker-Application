@@ -1,0 +1,27 @@
+.score-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge-ready {
+  background: var(--ready-bg);
+  color: var(--ready);
+  border: 1px solid #b8dfc8;
+}
+
+.badge-needs-work {
+  background: var(--needs-work-bg);
+  color: var(--needs-work);
+  border: 1px solid #f0d9a8;
+}
+
+.badge-will-fail {
+  background: var(--will-fail-bg);
+  color: var(--will-fail);
+  border: 1px solid #f5c6c2;
+}

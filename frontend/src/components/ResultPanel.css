@@ -1,0 +1,125 @@
+.result-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.result-header h2 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.row-count {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 0.125rem;
+}
+
+.summary-box {
+  padding: 1rem 1.125rem;
+  border-radius: var(--radius);
+  border: 1px solid;
+}
+
+.summary-box.score-ready {
+  background: var(--ready-bg);
+  border-color: #b8dfc8;
+}
+
+.summary-box.score-needs-work {
+  background: var(--needs-work-bg);
+  border-color: #f0d9a8;
+}
+
+.summary-box.score-will-fail {
+  background: var(--will-fail-bg);
+  border-color: #f5c6c2;
+}
+
+.summary-text {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.difficulty {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 0.375rem;
+}
+
+.difficulty-hint {
+  font-weight: 400;
+}
+
+.errors-block {
+  background: var(--will-fail-bg);
+  border: 1px solid #f5c6c2;
+  border-radius: var(--radius);
+  padding: 1rem 1.125rem;
+}
+
+.errors-block h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--will-fail);
+  margin-bottom: 0.5rem;
+}
+
+.errors-block ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+  font-size: 0.875rem;
+  color: var(--will-fail);
+}
+
+.errors-block li + li {
+  margin-top: 0.25rem;
+}
+
+.analysis-block {
+  padding: 1rem 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #f8fafc;
+  font-size: 0.875rem;
+}
+
+.analysis-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.analysis-heading h3 {
+  font-size: 0.9375rem;
+}
+
+.analysis-heading span {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.analysis-block p + p,
+.analysis-block ul {
+  margin-top: 0.5rem;
+}
+
+.analysis-block ul {
+  padding-left: 1.25rem;
+}
+

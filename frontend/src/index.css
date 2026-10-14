@@ -1,0 +1,45 @@
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --border: #dde3ea;
+  --text: #1a2332;
+  --text-muted: #5a6577;
+  --primary: #0066cc;
+  --primary-hover: #0052a3;
+  --ready: #1a7f4b;
+  --ready-bg: #e8f5ee;
+  --needs-work: #b36b00;
+  --needs-work-bg: #fff6e6;
+  --will-fail: #c0392b;
+  --will-fail-bg: #fdecea;
+  --shadow: 0 1px 3px rgba(26, 35, 50, 0.08);
+  --radius: 8px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}

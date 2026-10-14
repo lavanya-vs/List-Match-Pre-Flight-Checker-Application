@@ -1,0 +1,86 @@
+.manual-mapping {
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #dde3ea);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.manual-mapping-header h3 {
+  margin: 0 0 0.25rem;
+}
+
+.manual-mapping-header p {
+  margin: 0 0 1rem;
+  color: var(--text-muted, #5a6572);
+  font-size: 0.9rem;
+}
+
+.mapping-table-wrap {
+  overflow-x: auto;
+}
+
+.mapping-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.mapping-table th,
+.mapping-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border, #e8edf2);
+  text-align: left;
+}
+
+.mapping-table select {
+  min-width: 10rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.mapping-table .clash-row {
+  background: #fff8e6;
+}
+
+.mapping-clash-alert {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fff3cd;
+  border: 1px solid #f0d78c;
+  border-radius: 6px;
+}
+
+.mapping-clash-alert ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.mapping-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--primary, #0066cc);
+  color: #fff;
+}
+
+.btn-secondary {
+  background: #f4f6f8;
+  border-color: #dde3ea;
+}
+
+.mapping-hint {
+  margin-top: 0.75rem;
+  color: var(--text-muted, #5a6572);
+  font-size: 0.85rem;
+}

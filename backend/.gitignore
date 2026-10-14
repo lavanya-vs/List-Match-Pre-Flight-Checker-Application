@@ -1,0 +1,7 @@
+target/
+data/
+application-local.properties
+src/main/resources/application-local.properties
+.idea/
+*.iml
+.DS_Store

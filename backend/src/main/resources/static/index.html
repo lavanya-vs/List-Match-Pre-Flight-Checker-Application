@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>List Match Pre-Flight Checker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f6f8; --surface: #fff; --border: #dde3ea; --text: #1a2332;
+      --text-muted: #5a6577; --primary: #0066cc; --ready: #1a7f4b; --ready-bg: #e8f5ee;
+      --needs-work: #b36b00; --needs-work-bg: #fff6e6; --will-fail: #c0392b; --will-fail-bg: #fdecea;
+      --radius: 8px; --shadow: 0 1px 3px rgba(26,35,50,.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'IBM Plex Sans', sans-serif; background: var(--bg); color: var(--text);
+      line-height: 1.5; min-height: 100vh; overflow-x: hidden;
+    }
+    body::before, body::after {
+      content: ''; position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      filter: blur(60px); opacity: .35;
+    }
+    body::before {
+      width: 320px; height: 320px; background: #c5daf5; top: -80px; right: -60px;
+      animation: floatBlob 12s ease-in-out infinite;
+    }
+    body::after {
+      width: 260px; height: 260px; background: #d4edda; bottom: -60px; left: -40px;
+      animation: floatBlob 14s ease-in-out infinite reverse;
+    }
+    @keyframes floatBlob {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(20px, 15px) scale(1.06); }
+    }
+    .header {
+      background: var(--surface); border-bottom: 1px solid var(--border); padding: 1.5rem 2rem;
+      position: relative; z-index: 1;
+      animation: slideDown .55s cubic-bezier(.22, 1, .36, 1) both;
+    }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .header-inner, .main { max-width: 960px; margin: 0 auto; }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+    }
+    .header-brand { min-width: 0; }
+    .header-logo {
+      height: 4.5rem; width: auto; max-width: min(220px, 40vw);
+      flex-shrink: 0; object-fit: contain;
+    }
+    h1 {
+      font-size: 1.375rem; font-weight: 600;
+      background: linear-gradient(90deg, var(--text), var(--primary), var(--text));
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: titleShine 6s linear infinite;
+    }
+    @keyframes titleShine {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    .subtitle { color: var(--text-muted); font-size: .9375rem; margin-top: .25rem; animation: fadeIn .7s .2s ease-out both; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .main {
+      padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem;
+      position: relative; z-index: 1;
+      animation: fadeInUp .6s .15s ease-out both;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .footer { text-align: center; padding: 1rem; color: var(--text-muted); font-size: .8125rem; }
+    .dropzone {
+      background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 2.5rem 2rem; text-align: center; cursor: pointer; box-shadow: var(--shadow);
+      position: relative; overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, background .25s ease, box-shadow .25s ease;
+    }
+    .dropzone:hover, .dropzone.drag-over {
+      border-color: var(--primary); background: #f8fbff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 102, 204, 0.1);
+    }
+    .dropzone.drag-over {
+      animation: dropBounce .45s ease;
+      border-style: solid;
+    }
+    @keyframes dropBounce {
+      0%, 100% { transform: translateY(-2px) scale(1); }
+      40% { transform: translateY(-4px) scale(1.01); }
+    }
+    .dropzone:not(.loading) { animation: dashMarch 20s linear infinite; }
+    @keyframes dashMarch { to { border-color: var(--border); } }
+    .dropzone:not(.loading):hover {
+      animation: dashMarch 20s linear infinite, borderGlow 2s ease-in-out infinite;
+    }
+    @keyframes borderGlow {
+      0%, 100% { border-color: var(--primary); }
+      50% { border-color: #4da3ff; }
+    }
+    .dropzone.loading {
+      cursor: wait; pointer-events: none;
+      border-color: var(--primary);
+      background: #f8fbff;
+      animation: borderPulse 1.6s ease-in-out infinite;
+    }
+    @keyframes borderPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0.12); }
+      50% { box-shadow: 0 0 0 6px rgba(0, 102, 204, 0.06); }
+    }
+    .dropzone.loading::after {
+      content: '';
+      position: absolute; left: 0; right: 0; top: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      animation: scanLine 1.4s ease-in-out infinite;
+    }
+    .dropzone.loading::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,.45) 50%, transparent 60%);
+      animation: shineSweep 2s ease-in-out infinite;
+    }
+    @keyframes shineSweep {
+      0% { transform: translateX(-120%); }
+      100% { transform: translateX(120%); }
+    }
+    @keyframes scanLine {
+      0% { transform: translateX(-100%); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translateX(100%); opacity: 0; }
+    }
+    .upload-icon {
+      width: 44px; height: 44px; border-radius: 50%; background: var(--bg); margin: 0 auto .5rem;
+      display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.25rem;
+      transition: transform .25s ease, box-shadow .25s ease;
+      animation: iconFloat 3s ease-in-out infinite;
+    }
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    #dropzone:not(.loading):hover .upload-icon {
+      transform: translateY(-6px) scale(1.08);
+      box-shadow: 0 6px 16px rgba(0, 102, 204, 0.18);
+      animation: none;
+    }
+    #dropzone.drag-over .upload-icon { animation: iconSpin .6s ease; }
+    @keyframes iconSpin {
+      from { transform: rotate(0deg) scale(1.1); }
+      to { transform: rotate(360deg) scale(1.1); }
+    }
+    .browse-link {
+      color: var(--primary); font-weight: 500;
+      background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+      transition: background-size .3s ease;
+    }
+    #dropzone:hover .browse-link { background-size: 100% 1px; }
+    .hint { font-size: .8125rem; color: var(--text-muted); margin-top: .25rem; }
+    .alert-error { background: var(--will-fail-bg); color: var(--will-fail); border: 1px solid #f5c6c2;
+      padding: .875rem 1rem; border-radius: var(--radius); }
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.5rem; box-shadow: var(--shadow); }
+    .result-header { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+    .badge { padding: .375rem .75rem; border-radius: 999px; font-size: .8125rem; font-weight: 600; white-space: nowrap; }
+    .badge-READY { background: var(--ready-bg); color: var(--ready); border: 1px solid #b8dfc8; }
+    .badge-NEEDS_WORK { background: var(--needs-work-bg); color: var(--needs-work); border: 1px solid #f0d9a8; }
+    .badge-WILL_FAIL { background: var(--will-fail-bg); color: var(--will-fail); border: 1px solid #f5c6c2; }
+    .summary { padding: 1rem; border-radius: var(--radius); border: 1px solid; margin-top: 1rem; font-weight: 500; }
+    .summary-READY { background: var(--ready-bg); border-color: #b8dfc8; }
+    .summary-NEEDS_WORK { background: var(--needs-work-bg); border-color: #f0d9a8; }
+    .summary-WILL_FAIL { background: var(--will-fail-bg); border-color: #f5c6c2; }
+    .meta { font-size: .8125rem; color: var(--text-muted); margin-top: .375rem; }
+    h3 { font-size: .875rem; font-weight: 600; margin: 1.25rem 0 .625rem; }
+    .errors { background: var(--will-fail-bg); border: 1px solid #f5c6c2; border-radius: var(--radius); padding: 1rem; margin-top: 1rem; }
+    .errors ul { padding-left: 1.25rem; font-size: .875rem; color: var(--will-fail); }
+    .ad-clash-panel {
+      background: #fff8e6; border: 1px solid #e6c86a; border-radius: var(--radius);
+      padding: 1.25rem 1.375rem; margin-top: 1rem;
+    }
+    .ad-clash-panel > h3 { margin: 0 0 1rem; font-size: 1rem; color: #7a5b00; }
+    .ad-clash-panel h4 {
+      margin: 0 0 .35rem; font-size: .8125rem; text-transform: uppercase;
+      letter-spacing: .03em; color: #8a6d00;
+    }
+    .ad-clash-panel p { margin: 0 0 1rem; font-size: .9rem; line-height: 1.5; color: #3d3420; }
+    .clash-card {
+      background: #fff; border: 1px solid #ecdca0; border-radius: 6px;
+      padding: .75rem; margin-top: .75rem;
+    }
+    .clash-card-title { font-size: .875rem; font-weight: 600; margin-bottom: .5rem; color: #5c4a12; }
+    .clash-table { width: 100%; border-collapse: collapse; font-size: .8125rem; border: none; }
+    .clash-table th, .clash-table td { padding: .4rem .5rem; border-bottom: 1px solid #f0e6c8; }
+    .clash-table th { background: #fffdf5; color: #8a6d00; }
+    .clash-fix {
+      font-size: .875rem; padding: .75rem; background: #fff; border-radius: 6px;
+      border: 1px dashed #e6c86a; color: #3d3420; margin-top: .5rem;
+    }
+    .mapping-row {
+      font-size: .875rem; margin-bottom: .375rem;
+      animation: revealBlock .35s ease-out both;
+    }
+    .mapping-row code {
+      background: var(--bg); padding: .125rem .5rem; border-radius: 4px; font-size: .8125rem;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .mapping-row:hover code { background: #eef5fc; transform: translateX(3px); }
+    .mapping-row .field-label { color: var(--text-muted); min-width: 100px; display: inline-block; }
+    .mapping-row-missing .field-label { color: var(--text-muted); opacity: .75; }
+    .field-missing {
+      color: var(--text-muted); font-style: italic; font-size: .8125rem; opacity: .8;
+    }
+    .match-item {
+      padding: .75rem 1rem; border-radius: var(--radius); border: 1px solid var(--border);
+      background: var(--bg); margin-bottom: .5rem;
+      animation: revealBlock .4s ease-out both;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .match-item:hover { transform: translateX(4px); box-shadow: 0 2px 8px rgba(26,35,50,.06); }
+    .match-item.viable { border-color: #b8dfc8; background: #f6fbf8; }
+    .match-item.viable:hover { box-shadow: 0 2px 12px rgba(26, 127, 75, 0.12); }
+    table { width: 100%; border-collapse: collapse; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    th, td { padding: .5rem .75rem; text-align: left; font-size: .8125rem; border-bottom: 1px solid var(--border); }
+    th { background: var(--bg); color: var(--text-muted); }
+    .tag {
+      display: inline-block; background: var(--needs-work-bg); color: var(--needs-work);
+      padding: .125rem .5rem; border-radius: 4px; font-size: .75rem; margin-right: .25rem;
+      animation: tagPop .35s cubic-bezier(.34, 1.4, .64, 1) both;
+      transition: transform .15s ease;
+    }
+    .tag:hover { transform: scale(1.06); }
+    @keyframes tagPop {
+      from { opacity: 0; transform: scale(.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    tbody tr { animation: rowReveal .35s ease-out both; }
+    @keyframes rowReveal {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .col-table-wrap { overflow-x: auto; margin-top: .5rem; border-radius: var(--radius); border: 1px solid var(--border); }
+    .col-match-yes { font-size: .6875rem; color: var(--ready); font-weight: 600; }
+    .col-match-no { font-size: .6875rem; color: var(--text-muted); }
+    .missing-pct { font-weight: 600; font-size: .8125rem; }
+    .missing-pct.low { color: var(--ready); }
+    .missing-pct.mid { color: var(--needs-work); }
+    .missing-pct.high { color: var(--will-fail); }
+    .sample-preview { font-size: .75rem; color: var(--text-muted); font-style: italic; max-width: 160px; }
+    .hidden { display: none; }
+    .spinner-wrap { position: relative; width: 48px; height: 48px; margin: 0 auto .875rem; }
+    .spinner {
+      width: 48px; height: 48px; border: 3px solid #d6e8f8; border-top-color: var(--primary);
+      border-radius: 50%; animation: spin .75s linear infinite;
+    }
+    .spinner-orbit {
+      position: absolute; inset: 0; animation: spin 1.2s linear infinite reverse;
+    }
+    .spinner-orbit span {
+      position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--primary);
+      top: 0; left: 50%; transform: translateX(-50%);
+      box-shadow: 0 0 6px rgba(0, 102, 204, 0.4);
+    }
+    .spinner-orbit span:nth-child(2) { top: auto; bottom: 0; background: #4da3ff; }
+    .spinner-orbit span:nth-child(3) { top: 50%; left: 0; transform: translateY(-50%); background: #7eb8f0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-status {
+      font-size: .9375rem; font-weight: 500; color: var(--text); margin-bottom: .875rem;
+    }
+    .loading-dots::after {
+      content: '';
+      animation: loadingDots 1.4s steps(4, end) infinite;
+    }
+    @keyframes loadingDots {
+      0% { content: ''; }
+      25% { content: '.'; }
+      50% { content: '..'; }
+      75% { content: '...'; }
+    }
+    .pipeline {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: .375rem;
+      margin-bottom: 1rem; max-width: 420px; margin-left: auto; margin-right: auto;
+    }
+    .pipeline-step {
+      font-size: .6875rem; color: var(--text-muted); padding: .25rem .625rem;
+      border-radius: 999px; border: 1px solid var(--border); background: var(--surface);
+      transition: all .35s ease; opacity: .55;
+    }
+    .pipeline-step.active {
+      color: var(--primary); border-color: #b8d4f0; background: #eef5fc;
+      opacity: 1; transform: scale(1.04);
+      box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+    }
+    .pipeline-step.done {
+      color: var(--ready); border-color: #b8dfc8; background: var(--ready-bg); opacity: 1;
+    }
+    .load-progress {
+      height: 4px; background: #e8eef4; border-radius: 99px; overflow: hidden;
+      max-width: 280px; margin: 0 auto;
+    }
+    .load-progress-fill {
+      height: 100%; width: 0; border-radius: 99px;
+      background: linear-gradient(90deg, var(--primary), #4da3ff, var(--primary));
+      background-size: 200% 100%;
+      transition: width .45s ease;
+      animation: progressShine 1.5s linear infinite;
+    }
+    @keyframes progressShine {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+    .loading-skeleton {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem 1.375rem; box-shadow: var(--shadow);
+      animation: fadeInPanel .3s ease-out both;
+    }
+    .loading-skeleton h3 {
+      font-size: .875rem; margin: 0 0 .875rem; color: var(--text-muted); font-weight: 500;
+    }
+    .skeleton-line {
+      height: 10px; border-radius: 4px; margin-bottom: .625rem;
+      background: linear-gradient(90deg, #eef2f6 25%, #f8fafc 50%, #eef2f6 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s ease-in-out infinite;
+    }
+    .skeleton-line.w60 { width: 60%; }
+    .skeleton-line.w80 { width: 80%; }
+    .skeleton-line.w40 { width: 40%; }
+    .skeleton-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: .625rem; margin-top: .75rem;
+    }
+    .skeleton-card {
+      height: 52px; border-radius: 6px; border: 1px solid var(--border);
+      background: linear-gradient(90deg, #eef2f6 25%, #f8fafc 50%, #eef2f6 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.2s ease-in-out infinite;
+    }
+    .skeleton-card:nth-child(2) { animation-delay: .1s; }
+    .skeleton-card:nth-child(3) { animation-delay: .2s; }
+    .skeleton-card:nth-child(4) { animation-delay: .3s; }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @media (max-width: 520px) { .skeleton-grid { grid-template-columns: repeat(2, 1fr); } }
+    .plain-box {
+      background: #f8fbff; border: 1px solid #c5daf5; border-radius: var(--radius);
+      padding: 1.125rem 1.25rem; margin-top: 1rem;
+      animation: revealBlock .45s ease-out both;
+    }
+    .plain-box:nth-of-type(2) { animation-delay: .08s; }
+    .plain-box:nth-of-type(3) { animation-delay: .16s; }
+    @keyframes revealBlock {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .plain-box h3 { margin: 0 0 .5rem; font-size: .9375rem; color: var(--text); }
+    .plain-box p { font-size: .9375rem; line-height: 1.55; }
+    .plain-box ul { margin: .5rem 0 0 1.125rem; font-size: .875rem; line-height: 1.55; }
+    .plain-box li + li { margin-top: .375rem; }
+    .next-steps {
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem 1.125rem; margin-top: 1rem;
+    }
+    .next-steps h3 { margin-top: 0; }
+    .section-note { font-size: .8125rem; color: var(--text-muted); margin: -.25rem 0 .625rem; }
+    .analysis-panel {
+      background: linear-gradient(135deg, #f8fbff 0%, #f0f7ff 50%, #f8fbff 100%);
+      background-size: 200% 200%;
+      border: 1px solid #b8d4f0; border-radius: var(--radius);
+      padding: 1.25rem 1.375rem; margin-top: 1rem;
+      animation: fadeInPanel .45s ease-out both, panelGradient 8s ease infinite;
+      position: relative; overflow: hidden;
+    }
+    @keyframes panelGradient {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    .analysis-panel::before {
+      content: ''; position: absolute; top: -50%; right: -20%; width: 180px; height: 180px;
+      background: radial-gradient(circle, rgba(0,102,204,.06) 0%, transparent 70%);
+      animation: floatBlob 8s ease-in-out infinite; pointer-events: none;
+    }
+    .analysis-panel ul li {
+      animation: revealBlock .4s ease-out both;
+    }
+    .analysis-panel ul li:nth-child(1) { animation-delay: .05s; }
+    .analysis-panel ul li:nth-child(2) { animation-delay: .1s; }
+    .analysis-panel ul li:nth-child(3) { animation-delay: .15s; }
+    .analysis-panel ul li:nth-child(4) { animation-delay: .2s; }
+    .analysis-panel ul li:nth-child(5) { animation-delay: .25s; }
+    @keyframes fadeInPanel {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .analysis-panel h3 { margin: 0 0 .625rem; font-size: .9375rem; }
+    .analysis-badge {
+      display: inline-block; font-size: .6875rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .04em; padding: .2rem .5rem; border-radius: 4px; margin-bottom: .75rem;
+      background: #e3eef9; color: #004080;
+      animation: badgePulse 2.5s ease-in-out infinite;
+    }
+    @keyframes badgePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(0, 102, 204, 0); }
+      50% { box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.08); }
+    }
+    .analysis-badge.ai { background: #e8f0fe; color: #1a56db; }
+    .confidence { font-size: .75rem; color: var(--text-muted); }
+    .confidence-high { color: var(--ready); }
+    .confidence-mid { color: var(--needs-work); }
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: .625rem; margin-top: .75rem;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+      padding: .625rem .75rem;
+      opacity: 0;
+      animation: statFadeUp .4s ease-out forwards;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26, 35, 50, 0.08);
+      border-color: #c5daf5;
+    }
+    @keyframes statFadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .stat-card .val { font-size: 1.125rem; font-weight: 600; line-height: 1.2; }
+    .stat-card .val.counting { color: var(--primary); }
+    .stat-card .lbl { font-size: .6875rem; color: var(--text-muted); margin-top: .125rem; }
+    .stat-card.missing .val { color: var(--needs-work); }
+    .stat-card.missing-high .val { color: var(--will-fail); }
+    .stat-bar {
+      height: 3px; background: var(--bg); border-radius: 99px;
+      margin-top: .5rem; overflow: hidden;
+    }
+    .stat-bar-fill {
+      height: 100%; border-radius: 99px; background: var(--primary);
+      width: 0; transition: width .8s cubic-bezier(.4, 0, .2, 1);
+    }
+    .stat-card.missing .stat-bar-fill { background: var(--needs-work); }
+    .stat-card.missing-high .stat-bar-fill { background: var(--will-fail); }
+    .panel { animation: fadeInPanel .35s ease-out both; }
+    .result-header .badge {
+      animation: badgePop .5s cubic-bezier(.34, 1.4, .64, 1) .2s both;
+    }
+    @keyframes badgePop {
+      from { opacity: 0; transform: scale(.85); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .badge-READY { animation: badgePop .5s cubic-bezier(.34, 1.4, .64, 1) .2s both, readyGlow 2s ease-in-out 1s infinite; }
+    @keyframes readyGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(26, 127, 75, 0); }
+      50% { box-shadow: 0 0 0 4px rgba(26, 127, 75, 0.12); }
+    }
+    .badge-NEEDS_WORK { animation: badgePop .5s cubic-bezier(.34, 1.4, .64, 1) .2s both, warnPulse 2.5s ease-in-out 1s infinite; }
+    .badge-WILL_FAIL { animation: badgePop .5s cubic-bezier(.34, 1.4, .64, 1) .2s both, failShake .5s ease .4s; }
+    @keyframes warnPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(179, 107, 0, 0); }
+      50% { box-shadow: 0 0 0 4px rgba(179, 107, 0, 0.12); }
+    }
+    @keyframes failShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-3px); }
+      40% { transform: translateX(3px); }
+      60% { transform: translateX(-2px); }
+      80% { transform: translateX(2px); }
+    }
+    .alert-error { animation: fadeInPanel .3s ease-out both, errorWiggle .4s ease .1s; }
+    @keyframes errorWiggle {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+    .details-toggle {
+      margin-top: 1.25rem; background: none; border: none; color: var(--primary);
+      font-family: inherit; font-size: .8125rem; font-weight: 500; cursor: pointer; padding: 0;
+      transition: transform .2s ease, color .2s ease;
+    }
+    .details-toggle:hover { text-decoration: underline; transform: translateX(3px); }
+    .tech-details {
+      margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--border);
+      overflow: hidden; max-height: 4000px;
+      transition: max-height .5s cubic-bezier(.4, 0, .2, 1), opacity .4s ease, transform .4s ease;
+      opacity: 1; transform: translateY(0);
+    }
+    .tech-details.hidden {
+      display: block; max-height: 0; opacity: 0; padding-top: 0; margin-top: 0;
+      border-top-color: transparent; transform: translateY(-8px); pointer-events: none;
+    }
+    .result-flash {
+      position: fixed; inset: 0; pointer-events: none; z-index: 999;
+      animation: flashFade .7s ease-out forwards;
+    }
+    .result-flash.ready { background: radial-gradient(circle at 50% 30%, rgba(26,127,75,.12), transparent 55%); }
+    .result-flash.needs-work { background: radial-gradient(circle at 50% 30%, rgba(179,107,0,.1), transparent 55%); }
+    .result-flash.will-fail { background: radial-gradient(circle at 50% 30%, rgba(192,57,43,.1), transparent 55%); }
+    @keyframes flashFade {
+      0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0; }
+    }
+    .confetti-burst {
+      position: fixed; inset: 0; pointer-events: none; z-index: 998; overflow: hidden;
+    }
+    .confetti-burst span {
+      position: absolute; width: 6px; height: 6px; border-radius: 1px;
+      animation: confettiFall 1.2s ease-out forwards;
+    }
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(80px) rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <h1>List Match Pre-Flight Checker</h1>
+        <p class="subtitle">Automated data-quality analysis for IQVIATools list matching</p>
+      </div>
+      <img src="iqvia-logo.png" alt="IQVIA" class="header-logo" />
+    </div>
+  </header>
+
+  <main class="main">
+    <div id="dropzone" class="dropzone">
+      <input id="fileInput" type="file" accept=".csv,.xlsx,.xls" hidden />
+      <div id="uploadIdle">
+        <div class="upload-icon">↑</div>
+        <p>Drop a file here or <span class="browse-link">browse</span></p>
+        <p class="hint">CSV or Excel</p>
+      </div>
+      <div id="uploadLoading" class="hidden">
+        <div class="spinner-wrap">
+          <div class="spinner"></div>
+          <div class="spinner-orbit"><span></span><span></span><span></span></div>
+        </div>
+        <p class="loading-status"><span id="loadingLabel">Reading file</span><span class="loading-dots"></span></p>
+        <div class="pipeline" id="pipeline">
+          <span class="pipeline-step active" data-step="0">Read file</span>
+          <span class="pipeline-step" data-step="1">Map columns</span>
+          <span class="pipeline-step" data-step="2">Check rules</span>
+          <span class="pipeline-step" data-step="3">Analyze</span>
+        </div>
+        <div class="load-progress"><div class="load-progress-fill" id="loadProgressFill"></div></div>
+      </div>
+    </div>
+
+    <div id="loadingSkeleton" class="loading-skeleton hidden" aria-hidden="true">
+      <h3>Running pre-flight analysis…</h3>
+      <div class="skeleton-line w80"></div>
+      <div class="skeleton-line w60"></div>
+      <div class="skeleton-line w40"></div>
+      <div class="skeleton-grid">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </div>
+
+    <div id="errorBox" class="alert-error hidden" role="alert"></div>
+    <div id="resultBox" class="hidden"></div>
+  </main>
+
+  <footer class="footer">
+    Upload CSV or Excel · Auto-detects columns · Estimates match readiness
+  </footer>
+
+  <script>
+    const FIELD_LABELS = {
+      FIRST_NAME: 'First Name', LAST_NAME: 'Last Name', NPI: 'NPI', ZIP: 'Zip',
+      ADDRESS: 'Address', CITY: 'City', STATE: 'State', EMAIL: 'Email', PHONE: 'Phone'
+    };
+    const FIELD_ORDER = ['NPI', 'FIRST_NAME', 'LAST_NAME', 'ADDRESS', 'CITY', 'STATE', 'ZIP', 'EMAIL', 'PHONE'];
+    const SCORE_LABELS = { READY: 'Ready to match', NEEDS_WORK: 'Fix before matching', WILL_FAIL: 'Cannot match yet' };
+
+    const DEFAULT_API = 'http://localhost:8085';
+    function getApiBase() {
+      if (window.location.protocol === 'file:') return DEFAULT_API;
+      if (window.location.port === '5173' || window.location.port === '3000') return DEFAULT_API;
+      return window.location.origin;
+    }
+
+    async function apiFetch(path, options) {
+      const url = getApiBase() + path;
+      try {
+        return await fetch(url, options);//yet to solve this line is throwing an error
+      } catch (err) {
+        const hint = err.name === 'AbortError'
+          ? 'Upload timed out — very large files may take several minutes.'
+          : 'Could not connect while uploading. If the file is very large, wait a few minutes or check the backend terminal for errors.';
+        throw new Error(
+          hint + ' Server: ' + getApiBase()
+          + ''
+        );
+      }
+    }
+
+    function explainScore(score) {
+      if (score === 'READY') {
+        return 'This file looks good. It has enough complete information for IQVIATools to match most or all rows.';
+      }
+      if (score === 'NEEDS_WORK') {
+        return 'This file has a possible match route, but its primary identifiers are incomplete or too broad for a production-ready match.';
+      }
+      return 'This file has no reliable match route. Do not send it to IQVIATools until the missing or invalid provider identifiers are corrected.';
+    }
+
+    function explainDifficulty(pct) {
+      if (pct < 40) return 'Matching should be straightforward — few gaps in the data.';
+      if (pct < 70) return 'Matching will take extra effort — expect manual fixes or many unmatched rows.';
+      return 'Matching will be very difficult — lots of missing or bad data.';
+    }
+
+    function explainError(msg) {
+      const map = {
+        'Need NPI or Last Name & Zip to run list matching.': 'The file must include either a doctor NPI number, or both Last Name and Zip code. Right now it has neither option fully available.',
+        'Missing Last Name column.': 'We could not find a Last Name column. Add one or rename your column so we can detect it (e.g. LAST_NAME).',
+        'Missing Zip column.': 'We could not find a Zip code column. Add one or rename your column (e.g. ZIP or POSTAL_CODE).',
+        'Missing NPI column.': 'We could not find an NPI column. Add one or rename your column (e.g. NPI or provider_npi).',
+        'No data rows found in file.': 'The file appears empty — there are no data rows to check.'
+      };
+      return map[msg] || msg;
+    }
+
+    function explainWarning(msg) {
+      if (msg.startsWith('Duplicate NPI')) {
+        return 'The same NPI appears on more than one row — only one provider should use each NPI.';
+      }
+      const map = {
+        'Missing NPI': 'This row has no NPI number.',
+        'Invalid NPI (must be a valid 10-digit NPI)': 'The NPI on this row fails the official 10-digit checksum.',
+        'Invalid zip (use 12345 or 12345-6789)': 'The zip is not in 12345 or 12345-6789 format.',
+        'Invalid street address': 'The street address is incomplete or malformed.',
+        'Invalid US state code': 'The state is not a recognized US postal abbreviation.',
+        'Missing last name': 'This row has no last name — needed for name + zip matching.',
+        'Missing zip': 'This row has no zip code — needed for name + zip matching.'
+      };
+      return map[msg] || msg;
+    }
+
+    function explainMatchType(mt) {
+      return mt.message;
+    }
+
+    function getNextSteps(r) {
+      if (r.score === 'READY') {
+        return [
+          'You can upload this file to IQVIATools.',
+          'Spot-check a few rows if this is a new client — column names can sometimes map incorrectly.'
+        ];
+      }
+      if (r.score === 'NEEDS_WORK') {
+        const steps = ['Open the file and fix the rows listed in the warnings table below.'];
+        if (r.rowWarnings && r.rowWarnings.length) {
+          steps.push('Focus on rows missing zip codes, last names, or valid NPI numbers first.');
+        }
+        steps.push('Re-upload here after fixing to confirm the score turns green.');
+        return steps;
+      }
+      const steps = [];
+      if (r.globalErrors && r.globalErrors.length) {
+        steps.push('Add the missing columns to your file (NPI, or Last Name + Zip).');
+        steps.push('Ask the client for a corrected export if their file is missing these fields.');
+      } else {
+        steps.push('Too many rows are blank or invalid — clean the source file with the client.');
+      }
+      steps.push('Re-upload here once fixed — do not send to IQVIATools yet.');
+      return steps;
+    }
+
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const errorBox = document.getElementById('errorBox');
+    const resultBox = document.getElementById('resultBox');
+    const loadingSkeleton = document.getElementById('loadingSkeleton');
+    const loadProgressFill = document.getElementById('loadProgressFill');
+    const loadingLabel = document.getElementById('loadingLabel');
+    const pipelineSteps = document.querySelectorAll('#pipeline .pipeline-step');
+
+    const PIPELINE_LABELS = ['Reading file', 'Mapping columns', 'Checking rules', 'Building analysis'];
+    let loadingTimer = null;
+
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+    dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+    function startLoadingAnimation() {
+      let step = 0;
+      if (loadProgressFill) loadProgressFill.style.width = '8%';
+      loadingLabel.textContent = PIPELINE_LABELS[0];
+
+      pipelineSteps.forEach(function(el, i) {
+        el.classList.remove('active', 'done');
+        if (i === 0) el.classList.add('active');
+      });
+
+      loadingTimer = setInterval(function() {
+        pipelineSteps.forEach(function(el, i) {
+          el.classList.remove('active');
+          if (i < step) el.classList.add('done');
+          if (i === step) el.classList.add('active');
+        });
+        loadingLabel.textContent = PIPELINE_LABELS[step];
+        if (loadProgressFill) {
+          loadProgressFill.style.width = Math.min(92, 8 + step * (84 / Math.max(PIPELINE_LABELS.length - 1, 1))) + '%';
+        }
+        step = (step + 1) % PIPELINE_LABELS.length;
+      }, 700);
+    }
+
+    function stopLoadingAnimation() {
+      if (loadingTimer) {
+        clearInterval(loadingTimer);
+        loadingTimer = null;
+      }
+      pipelineSteps.forEach(function(el) {
+        el.classList.remove('active');
+        el.classList.add('done');
+      });
+      if (loadProgressFill) loadProgressFill.style.width = '100%';
+      if (loadingLabel) loadingLabel.textContent = 'Complete';
+    }
+
+    function setLoading(on) {
+      dropzone.classList.toggle('loading', on);
+      document.getElementById('uploadIdle').classList.toggle('hidden', on);
+      document.getElementById('uploadLoading').classList.toggle('hidden', !on);
+      loadingSkeleton.classList.toggle('hidden', !on);
+      if (on) {
+        resultBox.classList.add('hidden');
+        startLoadingAnimation();
+      } else {
+        stopLoadingAnimation();
+        loadingSkeleton.classList.add('hidden');
+      }
+    }
+
+    async function pollJob(jobId) {
+      while (true) {
+        const res = await apiFetch('/api/jobs/' + jobId);
+        const job = await res.json();
+        if (!res.ok) throw new Error(job.error || 'Could not read job status');
+        if (loadingLabel) loadingLabel.textContent = (job.message || 'Processing…') + ' (' + (job.progress || 0) + '%)';
+        if (job.status === 'COMPLETE') {
+          if (job.result) return job.result;
+          if (job.resultJson) return JSON.parse(job.resultJson);
+          throw new Error('Analysis finished but no result was returned. Please try again.');
+        }
+        if (job.status === 'FAILED') throw new Error(job.error || job.message || 'Processing failed');
+        await new Promise(function(r) { setTimeout(r, 1000); });
+      }
+    }
+
+    const CHUNK_THRESHOLD = 50 * 1024 * 1024;
+    const CHUNK_SIZE = 8 * 1024 * 1024;
+
+    async function uploadChunked(file) {
+      if (loadingLabel) loadingLabel.textContent = 'Starting chunked upload…';
+      const initRes = await apiFetch('/api/upload/init', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fileName: file.name, fileSize: file.size, chunkSize: CHUNK_SIZE }),
+      });
+      const init = await initRes.json();
+      if (!initRes.ok) throw new Error(init.error || 'Could not start chunked upload');
+
+      const uploadId = init.uploadId;
+      const chunkSize = init.chunkSize;
+      const totalChunks = init.totalChunks;
+      let offset = 0;
+      for (let index = 0; index < totalChunks; index++) {
+        const chunk = file.slice(offset, offset + chunkSize);
+        offset += chunkSize;
+        const chunkRes = await apiFetch('/api/upload/' + uploadId + '/chunk/' + index, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/octet-stream' },
+          body: chunk,
+        });
+        if (!chunkRes.ok) {
+          const err = await chunkRes.json();
+          throw new Error(err.error || 'Chunk ' + (index + 1) + ' failed');
+        }
+        if (loadingLabel) {
+          loadingLabel.textContent = 'Uploading chunk ' + (index + 1) + ' of ' + totalChunks + '…';
+        }
+      }
+
+      if (loadingLabel) loadingLabel.textContent = 'Finalizing upload…';
+      const completeRes = await apiFetch('/api/upload/' + uploadId + '/complete?saveHistory=true', {
+        method: 'POST',
+      });
+      const complete = await completeRes.json();
+      if (!completeRes.ok) throw new Error(complete.error || 'Could not complete upload');
+      return pollJob(complete.jobId);
+    }
+
+    async function uploadFile(file) {
+      if (file.size >= CHUNK_THRESHOLD) {
+        return uploadChunked(file);
+      }
+      const formData = new FormData();
+      formData.append('file', file);
+      const useAsync = file.size >= CHUNK_THRESHOLD;
+      const res = await apiFetch('/api/check?async=' + useAsync + '&saveHistory=true', { method: 'POST', body: formData });
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseErr) {
+        throw new Error('Server returned an invalid response. Is the backend running on port 8085?');
+      }
+      if (res.status === 202 && data.jobId) {
+        return pollJob(data.jobId);
+      }
+      if (!res.ok) throw new Error(data.error || 'Upload failed');
+      return data;
+    }
+
+    async function handleFile(file) {
+      if (!/\.(csv|xlsx|xls)$/i.test(file.name)) {
+        showError('Please upload a CSV or Excel file (.csv, .xlsx)');
+        return;
+      }
+      setLoading(true);
+      errorBox.classList.add('hidden');
+      resultBox.classList.add('hidden');
+
+      try {
+        const data = await uploadFile(file);
+        renderResult(data);
+      } catch (err) {
+        showError(err.message);
+      } finally {
+        setTimeout(function() { setLoading(false); }, 350);
+      }
+    }
+
+    function showError(msg) {
+      errorBox.textContent = msg;
+      errorBox.classList.remove('hidden');
+    }
+
+    function isAdExportMsg(text) {
+      return text && text.toLowerCase().indexOf('ad export') >= 0;
+    }
+
+    function renderAdExportClashPanel(clashes) {
+      if (!clashes || !clashes.length) return '';
+      const names = clashes.map(function(c) { return c.adExportName; }).join(', ');
+      let html = '<div class="ad-clash-panel">';
+      html += '<h3>AD export column name conflict</h3>';
+      html += '<h4>What is the issue?</h4>';
+      html += '<p>This file would create <strong>' + clashes.length + ' duplicate AD export column name'
+        + (clashes.length > 1 ? 's' : '') + '</strong> (<code>' + esc(names) + '</code>) if loaded into IQVIATools as currently mapped. AD export cannot have two columns with the same name.</p>';
+      html += '<h4>Why is it happening?</h4>';
+      html += '<p>Mapped columns get <code>tl_</code> + DB name; extra columns get <code>x_</code> renamed to <code>tl_</code>. When a mapped column and an extra column produce the same AD name, you get a clash — e.g. <code>CLEAN_CITY</code> mapped to City and plain <code>CITY</code> as extra both become <code>tl_CITY</code>.</p>';
+      html += '<h4>Which columns clash?</h4>';
+      clashes.forEach(function(clash) {
+        html += '<div class="clash-card">';
+        html += '<div class="clash-card-title">Duplicate AD export name: <code>' + esc(clash.adExportName) + '</code></div>';
+        html += '<table class="clash-table"><thead><tr><th>Your column</th><th>Mapping</th><th>DB name</th><th>AD export</th></tr></thead><tbody>';
+        clash.columns.forEach(function(col) {
+          html += '<tr><td><code>' + esc(col.headerName) + '</code></td>';
+          html += '<td>' + (col.mapped ? 'Mapped for matching' : 'Extra data') + '</td>';
+          html += '<td><code>' + esc(col.dbColumnName) + '</code></td>';
+          html += '<td><code>' + esc(clash.adExportName) + '</code></td></tr>';
+        });
+        html += '</tbody></table></div>';
+      });
+      html += '<div class="clash-fix"><strong>What to do:</strong> Map only one city/state set for matching, or rename/remove the other columns so each AD export name is unique before loading the list.</div>';
+      html += '</div>';
+      return html;
+    }
+
+    function renderAnalysisPanel(a, detectedColumns, hideAdExportNotes) {
+      if (!a || a.analysisSource === 'Analysis disabled') return '';
+
+      let html = '<div class="analysis-panel">';
+      html += '<span class="analysis-badge' + (a.aiEnhanced ? ' ai' : '') + '">' + esc(a.analysisSource) + '</span>';
+      html += '<h3>Executive summary</h3>';
+      html += '<p>' + esc(a.executiveSummary || '') + '</p>';
+
+      if (a.recommendedMatchStrategy) {
+        html += '<h3 style="margin-top:1rem">Recommended match approach</h3>';
+        html += '<p>' + esc(a.recommendedMatchStrategy) + '</p>';
+      }
+
+      const riskNotes = (a.riskNotes || []).filter(function(n) {
+        return !hideAdExportNotes || !isAdExportMsg(n);
+      });
+      if (riskNotes.length) {
+        html += '<h3 style="margin-top:1rem">Risk & pattern notes</h3><ul>';
+        riskNotes.forEach(n => { html += '<li>' + esc(n) + '</li>'; });
+        html += '</ul>';
+      }
+
+      if (a.stats) {
+        const s = a.stats;
+        const cols = detectedColumns || {};
+        let delay = 0;
+        html += '<h3 style="margin-top:1rem">Data quality snapshot</h3>';
+        html += '<div class="stat-grid">';
+        html += statCard(s.rowsWithWarnings, 'Rows with issues', delay++);
+        html += statCard(s.warningRowPercent.toFixed(1) + '%', 'Issue rate', delay++, s.warningRowPercent, true, s.warningRowPercent);
+        html += statPercentCard(s.missingRowPercent, 'Missing data', delay++);
+        if (cols.NPI) html += statPercentCard(s.missingNpiPercent, 'Missing NPI', delay++);
+        if (cols.ZIP) html += statPercentCard(s.missingZipPercent, 'Missing zip', delay++);
+        if (cols.LAST_NAME) html += statPercentCard(s.missingLastNamePercent, 'Missing last name', delay++);
+        html += statCard(s.duplicateNpiCount, 'Duplicate NPIs', delay++);
+        html += statCard(s.invalidNpiCount, 'Invalid NPIs', delay++);
+        html += '</div>';
+      }
+
+      if (a.columnInsights && a.columnInsights.length) {
+        const colCount = a.columnInsights.length;
+        html += '<h3 style="margin-top:1rem">Column interpretation (' + colCount + ' column' + (colCount === 1 ? '' : 's') + ' detected)</h3>';
+        html += '<p class="section-note">Every column from your uploaded file — predictions update automatically per file.</p>';
+        html += '<div class="col-table-wrap"><table><thead><tr>';
+        html += '<th>Column in file</th><th>Likely meaning</th><th>Missing</th>';
+        html += '</tr></thead><tbody>';
+        a.columnInsights.forEach(function(c, i) {
+          const miss = c.missingPercent || 0;
+          const missCls = miss >= 30 ? 'high' : (miss > 0 ? 'mid' : 'low');
+          html += '<tr style="animation-delay:' + (i * 0.04) + 's">';
+          html += '<td><code>' + esc(c.headerName) + '</code></td>';
+          html += '<td><strong style="font-size:.8125rem">' + esc(c.suggestedField) + '</strong>';
+          html += '<br><span class="meta">' + esc(c.reason) + '</span></td>';
+          html += '<td><span class="missing-pct ' + missCls + '">' + miss.toFixed(1) + '%</span>';
+          html += '<br><span class="meta">' + (c.filledRows || 0) + ' / ' + (c.totalRows || 0) + ' filled</span></td>';
+          html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+      } else {
+        html += '<h3 style="margin-top:1rem">Column interpretation</h3>';
+        html += '<p class="section-note">No columns were found in this file.</p>';
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    function statCard(val, label, delay, barPercent, animatePercent, countTarget) {
+      const bar = barPercent != null
+        ? '<div class="stat-bar"><div class="stat-bar-fill" data-width="' + Math.min(barPercent, 100) + '"></div></div>'
+        : '';
+      var valHtml;
+      if (animatePercent && countTarget != null) {
+        valHtml = '<div class="val counting" data-count="' + countTarget + '" data-suffix="%">0.0%</div>';
+      } else {
+        const num = parseFloat(String(val).replace(/[^0-9.]/g, ''));
+        const isNum = !isNaN(num) && String(val).match(/^\d+$/);
+        const countAttr = isNum ? ' data-count="' + num + '"' : '';
+        const countCls = isNum ? ' counting' : '';
+        valHtml = '<div class="val' + countCls + '"' + countAttr + '>' + esc(String(val)) + '</div>';
+      }
+      return '<div class="stat-card" style="animation-delay:' + (delay * 60) + 'ms">'
+        + valHtml + '<div class="lbl">' + esc(label) + '</div>' + bar + '</div>';
+    }
+
+    function statPercentCard(percent, label, delay) {
+      const pct = percent || 0;
+      const cls = pct >= 30 ? ' missing-high' : (pct > 0 ? ' missing' : '');
+      return '<div class="stat-card' + cls + '" style="animation-delay:' + (delay * 60) + 'ms">'
+        + '<div class="val counting" data-count="' + pct + '" data-suffix="%">0.0%</div>'
+        + '<div class="lbl">' + esc(label) + '</div>'
+        + '<div class="stat-bar"><div class="stat-bar-fill" data-width="' + Math.min(pct, 100) + '"></div></div>'
+        + '</div>';
+    }
+
+    function animateStatBars() {
+      requestAnimationFrame(function() {
+        document.querySelectorAll('.stat-bar-fill').forEach(function(el) {
+          var w = el.getAttribute('data-width');
+          if (w) el.style.width = w + '%';
+        });
+      });
+    }
+
+    function animateCountUps() {
+      document.querySelectorAll('.val[data-count]').forEach(function(el) {
+        var target = parseFloat(el.getAttribute('data-count'));
+        var suffix = el.getAttribute('data-suffix') || '';
+        var isInt = suffix === '' && target === Math.floor(target);
+        var start = performance.now();
+        var duration = 700;
+        function tick(now) {
+          var p = Math.min(1, (now - start) / duration);
+          var eased = 1 - Math.pow(1 - p, 3);
+          var current = target * eased;
+          el.textContent = isInt ? Math.round(current) : current.toFixed(1) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
+    function staggerRows() {
+      document.querySelectorAll('tbody tr').forEach(function(row, i) {
+        row.style.animationDelay = (i * 0.03) + 's';
+      });
+      document.querySelectorAll('.mapping-row, .match-item').forEach(function(el, i) {
+        el.style.animationDelay = (i * 0.06) + 's';
+      });
+    }
+
+    function playResultEffects(score) {
+      var flash = document.createElement('div');
+      flash.className = 'result-flash ' + (
+        score === 'READY' ? 'ready' : score === 'NEEDS_WORK' ? 'needs-work' : 'will-fail'
+      );
+      document.body.appendChild(flash);
+      setTimeout(function() { flash.remove(); }, 800);
+
+      if (score === 'READY') spawnConfetti();
+    }
+
+    function spawnConfetti() {
+      var wrap = document.createElement('div');
+      wrap.className = 'confetti-burst';
+      var colors = ['#1a7f4b', '#0066cc', '#4da3ff', '#b8dfc8'];
+      for (var i = 0; i < 18; i++) {
+        var dot = document.createElement('span');
+        dot.style.left = (40 + Math.random() * 20) + '%';
+        dot.style.top = '28%';
+        dot.style.background = colors[i % colors.length];
+        dot.style.animationDelay = (Math.random() * 0.3) + 's';
+        dot.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+        wrap.appendChild(dot);
+      }
+      document.body.appendChild(wrap);
+      setTimeout(function() { wrap.remove(); }, 1600);
+    }
+
+    function renderResult(data) {
+      if (!data) {
+        showError('No analysis result was returned. Please try uploading again.');
+        return;
+      }
+      const r = data.check || data;
+      if (!r || !r.fileName) {
+        showError('Unexpected server response. Please try again or check the backend logs.');
+        return;
+      }
+      const analysis = data.analysis || null;
+      const diff = Math.round(r.estimatedMatchDifficulty);
+      const warningCount = (r.rowWarnings || []).length;
+
+      let html = '<div class="panel"><div class="result-header">';
+      html += '<div><h2 style="font-size:1.0625rem;font-weight:600">' + esc(r.fileName) + '</h2>';
+      html += '<p class="meta">' + r.totalRows.toLocaleString() + ' people/rows in file</p></div>';
+      html += '<span class="badge badge-' + r.score + '">' + SCORE_LABELS[r.score] + '</span></div>';
+
+      const hasClashes = r.adExportClashes && r.adExportClashes.length;
+      if (hasClashes) {
+        html += renderAdExportClashPanel(r.adExportClashes);
+      }
+
+      html += renderAnalysisPanel(analysis, r.detectedColumns, !!hasClashes);
+
+      html += '<div class="plain-box"><h3>What this means</h3>';
+      html += '<p>' + esc(explainScore(r.score)) + '</p>';
+      html += '<p class="meta" style="margin-top:.625rem">Match effort: <strong>' + explainDifficulty(diff) + '</strong></p>';
+      html += '</div>';
+
+      const otherErrors = (r.globalErrors || []).filter(function(e) { return !isAdExportMsg(e); });
+      if (otherErrors.length) {
+        html += '<div class="plain-box" style="background:var(--will-fail-bg);border-color:#f5c6c2">';
+        html += '<h3 style="color:var(--will-fail)">Why this file cannot match yet</h3><ul>';
+        otherErrors.forEach(e => { html += '<li>' + esc(explainError(e)) + '</li>'; });
+        html += '</ul></div>';
+      }
+
+      html += '<button type="button" class="details-toggle" onclick="toggleDetails(this)">Show technical details</button>';
+      html += '<div class="tech-details hidden" id="techDetails">';
+
+      html += '<div class="summary summary-' + r.score + '" style="margin-top:0">';
+      html += esc(r.summary);
+      html += '<p class="meta">Difficulty score: ' + diff + '%</p></div>';
+
+      html += '<h3>Standard fields matched to your columns</h3>';
+      html += '<p class="section-note">Every field we can match on, and the column in your file it was matched to.</p>';
+      const cols = r.detectedColumns || {};
+      const foundCount = FIELD_ORDER.filter(k => cols[k]).length;
+      FIELD_ORDER.forEach(k => {
+        const clientColumn = cols[k];
+        html += '<div class="mapping-row' + (clientColumn ? '' : ' mapping-row-missing') + '">';
+        html += '<span class="field-label">' + FIELD_LABELS[k] + '</span> → ';
+        html += clientColumn
+          ? '<code>' + esc(clientColumn) + '</code>'
+          : '<span class="field-missing">not in your file</span>';
+        html += '</div>';
+      });
+      html += '<p class="meta" style="margin-top:.5rem">' + foundCount + ' of ' + FIELD_ORDER.length
+        + ' standard fields found in your file.</p>';
+      if (r.unmappedColumns && r.unmappedColumns.length) {
+        html += '<p class="meta" style="margin-top:.5rem">Other columns (not used for matching): ';
+        html += r.unmappedColumns.map(c => '<code>' + esc(c) + '</code>').join(', ');
+        html += '</p>';
+      }
+
+      if (r.matchTypes && r.matchTypes.length) {
+        html += '<h3>How each match method looks</h3>';
+        html += '<p class="section-note">IQVIATools can match by NPI, by name + zip, or by name + address. The strongest path your file supports is listed first.</p>';
+        r.matchTypes.forEach(mt => {
+          html += '<div class="match-item' + (mt.viable ? ' viable' : '') + '">';
+          html += '<div style="display:flex;justify-content:space-between"><strong style="font-size:.875rem">' + esc(mt.label) + '</strong>';
+          html += '<span class="meta">' + mt.coveragePercent.toFixed(1) + '% of rows complete</span></div>';
+          html += '<p style="font-size:.875rem;margin-top:.375rem">' + esc(explainMatchType(mt)) + '</p></div>';
+        });
+      }
+
+      if (warningCount > 0) {
+        html += '<h3>Rows that need fixing (' + warningCount.toLocaleString() + ')</h3>';
+        html += '<p class="section-note">Each row below is missing something required for matching.</p>';
+        html += '<table><thead><tr><th>Row #</th><th>Problem</th></tr></thead><tbody>';
+        r.rowWarnings.slice(0, 50).forEach(row => {
+          html += '<tr><td style="color:var(--text-muted)">' + row.rowNumber + '</td><td>';
+          row.warnings.forEach(w => { html += '<span class="tag">' + esc(explainWarning(w)) + '</span>'; });
+          html += '</td></tr>';
+        });
+        if (warningCount > 50) {
+          html += '<tr><td colspan="2" class="meta">Showing first 50 of ' + warningCount + ' problem rows.</td></tr>';
+        }
+        html += '</tbody></table>';
+      }
+
+      html += '</div></div>';
+      resultBox.innerHTML = html;
+      resultBox.classList.remove('hidden');
+      animateStatBars();
+      animateCountUps();
+      staggerRows();
+      playResultEffects(r.score);
+    }
+
+    function toggleDetails(btn) {
+      const panel = document.getElementById('techDetails');
+      const isHidden = panel.classList.contains('hidden');
+      if (isHidden) {
+        panel.classList.remove('hidden');
+        btn.textContent = 'Hide technical details';
+        staggerRows();
+      } else {
+        panel.classList.add('hidden');
+        btn.textContent = 'Show technical details';
+      }
+    }
+
+    function esc(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+﻿FIRST_NAME,LAST_NAME,NPI,ADDRESS,CITY,STATE,ZIP,SPECIALTY
+Michael,Williams,1200000010,207 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000028,214 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200000036,221 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200000044,228 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200000051,235 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200000069,242 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200000077,249 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200000085,256 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200000093,263 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000101,270 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200000119,277 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000127,,Denver,CO,80204,Pediatrics
+David,Brown,1200000135,291 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,298 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,305 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,312 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,319 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,326 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,333 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000200,340 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200000218,347 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000226,354 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200000234,361 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200000242,,Chicago,IL,60611,Oncology
+Carlos,Miller,1200000259,375 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200000267,382 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200000275,389 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200000283,396 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200000291,403 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000309,410 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200000317,417 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000325,424 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200000333,431 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,438 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,445 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,459 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,466 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,473 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000408,480 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200000408,487 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000408,494 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200000432,501 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200000440,508 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200000457,515 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200000465,522 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200000473,529 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200000481,,Boston,MA,02115,Cardiology
+Robert,Smith,1200000499,543 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000507,550 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200000515,557 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000523,564 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200000531,571 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,578 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,585 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,592 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,599 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,606 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,613 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000606,,Houston,TX,,Neurology
+Michael,Williams,1200000614,627 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000622,634 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200000630,641 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200000648,648 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200000655,655 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200000663,662 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200000671,669 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200000689,676 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200000697,683 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000705,690 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200000713,697 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000721,,Denver,CO,80204,Pediatrics
+David,Brown,1200000739,711 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,718 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,725 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,732 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,739 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,746 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,753 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000804,760 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200000812,767 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000820,774 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200000838,781 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200000846,,Chicago,IL,60611,Oncology
+Carlos,Miller,1200000853,795 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200000861,802 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200000879,809 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200000887,816 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200000895,823 Main St,Chicago,IL,60611,Oncology
+Priya,,1200000903,830 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200000911,837 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200000929,844 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200000937,851 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,858 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,865 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,879 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,886 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,893 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001000,900 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200001018,907 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001026,914 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200001034,921 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200001042,928 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200001059,935 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200001067,942 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200001075,949 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200001083,,Boston,MA,02115,Cardiology
+Robert,Smith,1200001091,963 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001109,970 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200001117,977 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001125,984 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200001133,991 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,998 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,1005 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,1012 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,1019 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,1026 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,1033 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001208,,Houston,TX,,Neurology
+Michael,Williams,1200001216,1047 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001224,1054 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200001232,1061 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200001240,1068 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200001257,1075 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200001265,1082 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200001273,1089 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200001281,1096 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200001299,1103 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001307,1110 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200001315,1117 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001323,,Denver,CO,80204,Pediatrics
+David,Brown,1200001331,1131 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,1138 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,1145 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,1152 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,1159 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,1166 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,1173 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001406,1180 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200001414,1187 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001422,1194 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200001430,1201 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200001448,,Chicago,IL,60611,Oncology
+Carlos,Miller,1200001455,1215 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200001463,1222 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200001471,1229 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200001489,1236 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200001497,1243 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001505,1250 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200001513,1257 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001521,1264 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200001539,1271 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,1278 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,1285 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,1299 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,1306 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,1313 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001604,1320 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200001612,1327 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001620,1334 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200001638,1341 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200001646,1348 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200001653,1355 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200001661,1362 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200001679,1369 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200001687,,Boston,MA,02115,Cardiology
+Robert,Smith,1200001695,1383 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001703,1390 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200001711,1397 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001729,1404 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200001737,1411 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,1418 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,1425 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,1432 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,1439 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,1446 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,1453 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001802,,Houston,TX,,Neurology
+Michael,Williams,1200001810,1467 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001828,1474 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200001836,1481 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200001844,1488 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200001851,1495 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200001869,1502 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200001877,1509 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200001885,1516 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200001893,1523 Main St,Chicago,IL,60611,Oncology
+Priya,,1200001901,1530 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200001919,1537 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200001927,,Denver,CO,80204,Pediatrics
+David,Brown,1200001935,1551 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,1558 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,1565 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,1572 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,1579 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,1586 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,1593 Main St,Chicago,IL,60611,Oncology
+Priya,,1200002008,1600 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200002016,1607 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200002024,1614 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200002032,1621 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200002040,,Chicago,IL,60611,Oncology
+Carlos,Miller,1200002057,1635 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200002065,1642 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200002073,1649 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200002081,1656 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200002099,1663 Main St,Chicago,IL,60611,Oncology
+Priya,,1200002107,1670 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200002115,1677 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200002123,1684 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200002131,1691 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,1698 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,1705 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,1719 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,1726 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,1733 Main St,Chicago,IL,60611,Oncology
+Priya,,1200002206,1740 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200002214,1747 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200002222,1754 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200002230,1761 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200002248,1768 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200002255,1775 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200002263,1782 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200002271,1789 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200002289,,Boston,MA,02115,Cardiology
+Robert,Smith,1200002297,1803 Main St,Chicago,IL,60611,Oncology
+Priya,,1200002305,1810 Oak Ave,Houston,TX,,Neurology
+Michael,Williams,1200002313,1817 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200002321,1824 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200002339,1831 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,,1838 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,,1845 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,,1852 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1234567890,1859 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1234567890,1866 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1234567890,1873 Main St,Chicago,IL,60611,Oncology
+Priya,,1200002404,,Houston,TX,,Neurology
+Michael,Williams,1200002412,1887 Maple Dr,Seattle,WA,98101,Primary Care
+Sarah,Patel,1200002420,1894 Park Blvd,Denver,CO,80204,Pediatrics
+David,Brown,1200002438,1901 Lake Rd,Boston,MA,02115,Cardiology
+Jennifer,Garcia,1200002446,1908 Main St,Chicago,IL,60611,Oncology
+Carlos,Miller,1200002453,1915 Oak Ave,Houston,TX,,Neurology
+Emily,Chen,1200002461,1922 Maple Dr,Seattle,WA,98101,Primary Care
+James,Davis,1200002479,1929 Park Blvd,Denver,CO,80204,Pediatrics
+Maria,Martinez,1200002487,1936 Lake Rd,Boston,MA,02115,Cardiology
+Robert,Smith,1200002495,1943 Main St,Chicago,IL,60611,Oncology
+Priya,,1200002503,1950 Oak Ave,Houston,TX,,Neurology

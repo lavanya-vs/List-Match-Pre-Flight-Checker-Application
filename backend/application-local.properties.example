@@ -1,0 +1,4 @@
+# Copy to application-local.properties for machine-specific settings (gitignored).
+#
+# Example — optional external LLM for narrative (scoring stays in Java):
+# ai.enabled=true

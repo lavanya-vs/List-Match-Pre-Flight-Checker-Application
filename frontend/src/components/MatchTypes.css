@@ -1,0 +1,44 @@
+.match-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.match-item {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.match-item.viable {
+  border-color: #b8dfc8;
+  background: #f6fbf8;
+}
+
+.match-item.not-viable {
+  opacity: 0.85;
+}
+
+.match-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.match-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.match-coverage {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.match-message {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
