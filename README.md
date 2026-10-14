@@ -10,7 +10,7 @@ Checks client provider lists **before** loading them into IQVIATools. Upload a C
 3. A black console window opens. Wait until you see **`Started PreflightApplication`**.  
    The first run can take several minutes while Maven downloads dependencies.
 4. Open a browser and go to: **http://localhost:8085**
-5. Upload a file, or try a demo from **`sample-data\demos\`** (for example `sample_perfect.csv`).
+5. Upload a file, or try a demo from **`sample-data\demos\`** (for example `sample_perfect.csv`). 
 
 
 ### Project root
