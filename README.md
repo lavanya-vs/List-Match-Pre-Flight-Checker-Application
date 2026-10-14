@@ -2,18 +2,6 @@
 
 Checks client provider lists **before** loading them into IQVIATools. Upload a CSV or Excel file to see **ready**, **needs cleanup**, or **will likely fail**, plus match-path fit, row warnings, and AD export clashes.
 
-## Requirements
-
-- **Java 11 or newer** ([Adoptium](https://adoptium.net/) or similar)
-- **Maven 3.8+** on your PATH, **or** Maven already downloaded under `%USERPROFILE%\.m2\wrapper\dists\` (the start script finds it automatically)
-
-Check from a terminal:
-
-```text
-java -version
-mvn -version
-```
-
 ## Run on Windows
 
 1. Get the project folder on your PC (clone from GitHub or unzip).
@@ -24,38 +12,13 @@ mvn -version
 4. Open a browser and go to: **http://localhost:8085**
 5. Upload a file, or try a demo from **`sample-data\demos\`** (for example `sample_perfect.csv`).
 
-Leave the console window open while you use the app. To stop the server, close that window or press **Ctrl+C** in it.
 
-## Run from the command line (optional)
-
-```text
-cd backend
-mvn spring-boot:run
-```
-
-Then open **http://localhost:8085**.
-
-## Troubleshooting
-
-| Problem | What to do |
-|--------|------------|
-| **Maven not found** | Install Maven and add it to PATH, or run on a machine that already has Maven under `.m2`. |
-| **Browser cannot connect** | Wait for `Started PreflightApplication` before opening the URL. |
-| **Port 8085 already in use** | Close any old server window and run `start-all.bat` again (the script tries to free the port). |
-
----
-
-## What’s in this project? (files and what they do)
-
-Plain-language map of the repo. **You only need the root `start-*.bat` files to run the app**; everything else is the server code, optional dev UI, sample spreadsheets, or docs.
-
-### Project root (double-click these)
+### Project root
 
 | File | What it does |
 |------|----------------|
 | **`start-all.bat`** | Opens a console and starts the server; tells you to open http://localhost:8085. |
 | **`start-backend.bat`** | Shortcut that runs the real start script under `scripts\`. |
-| **`start-frontend.bat`** | Starts the optional React dev UI (for developers; normal users use the built-in page at port 8085). |
 | **`README.md`** | This file — how to run and what each part of the project is for. |
 | **`.gitignore`** | Tells Git what not to upload (local secrets, build output, huge sample files). |
 
@@ -174,10 +137,6 @@ This is a **Spring Boot** Java app. It reads your file, runs checks, stores rece
 | **`AdExportColumnClashServiceTest.java`**, **`AdExportClashIntegrationTest.java`** | Tests AD export clash logic. |
 | **`DemoDatasetRegressionTest.java`**, **`RealWorldDatasetTest.java`** | Regression tests on sample CSVs so scores stay stable. |
 
-### `frontend\` (optional — separate React UI for development)
-
-Normal users **do not** need this folder; the app already ships a full UI in `backend\...\static\index.html`. Use `frontend\` only if you are changing the React version with Node.js.
-
 | File | What it does |
 |------|----------------|
 | **`package.json`** | Node dependencies and scripts (`npm run dev`). |
@@ -207,13 +166,6 @@ Normal users **do not** need this folder; the app already ships a full UI in `ba
 | **`fixtures\test-result.json`** | Saved example output for tests. |
 | **`generators\generate-samples.ps1`** | Recreates demo CSVs. |
 | **`generators\generate-large-clash-file.ps1`** | Builds a big clash file for stress testing (output may go under `large\`, which is not in Git). |
-
-### `docs\`
-
-| File | What it does |
-|------|----------------|
-| **`SIMPLE-README.md`** | Longer developer guide (architecture, API, testing). |
-
 ---
 
 ## More detail
